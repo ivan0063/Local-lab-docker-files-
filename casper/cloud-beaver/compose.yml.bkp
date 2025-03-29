@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  cloudbeaver:
+    image: my-cloudbeaver
+    container_name: cloudbeaver
+    ports:
+      - "8080:8978"
+    volumes:
+      - /opt/cloudbeaver/workspace:/opt/cloudbeaver/workspace
+    restart: always

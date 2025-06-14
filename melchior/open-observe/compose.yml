@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  openobserve:
+    image: public.ecr.aws/openobserve/openobserve:latest
+    container_name: openobserve
+    restart: unless-stopped
+    ports:
+      - "5080:5080" # UI de OpenObserve
+      - "5081:5081" # Puerto para ingesta de logs (Syslog/FluentD/OTEL, etc.)
+    volumes:
+      - openobserve_data:/data # Almacenamiento persistente para OpenObserve
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Permite a OpenObserve acceder a información de Docker (opcional, pero útil)
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro # Acceso a los logs de los contenedores si usas el driver de logging de Docker
+      # Opcional: Si tus aplicaciones escriben logs en un volumen compartido específico
+      # - /ruta/a/tus/logs/compartidos:/var/log/aplicaciones:ro
+
+volumes:
+  openobserve_data: # Define el volumen para la persistencia de OpenObserve
+    driver: local
